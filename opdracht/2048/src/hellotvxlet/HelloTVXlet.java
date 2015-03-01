@@ -11,7 +11,9 @@ import org.havi.ui.event.*;
 
 
 public class HelloTVXlet implements Xlet, HActionListener {
-    
+    int[][] playingField;
+    int score;
+    boolean dead;
   
     public HelloTVXlet() {
         
@@ -37,5 +39,11 @@ public class HelloTVXlet implements Xlet, HActionListener {
     public void actionPerformed(ActionEvent e)
     {
         
+    }
+    
+    public void restart(){
+        playingField = new int[4][4];
+        score = 0;
+        dead = false;
     }
 }
