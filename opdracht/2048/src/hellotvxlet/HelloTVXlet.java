@@ -15,6 +15,9 @@ import org.havi.ui.event.*;
 import java.util.Random;
 import java.awt.Graphics;
 import org.dvb.ui.*;
+import java.util.Timer ;
+import java . util . TimerTask ;
+import java.util.Arrays;
 
 
 public class HelloTVXlet implements Xlet, UserEventListener {
@@ -24,6 +27,12 @@ public class HelloTVXlet implements Xlet, UserEventListener {
     HScene scene;
     Random randomGenerator;
     int tiles;
+    
+    public HStaticText scoretext = new HStaticText("score: " + Integer.toString(score));
+    
+//    public HStaticText fieldtext = new HStaticText(Arrays.deepToString(playingField));
+    
+    
   
     public HelloTVXlet() {
         
@@ -39,13 +48,27 @@ public class HelloTVXlet implements Xlet, UserEventListener {
         
         tiles = 4;
         randomGenerator = new Random();
+        
+        scoretext.setLocation(250, 50);
+        scoretext.setSize(150, 50 );
+        scoretext.setBackground( new DVBColor(0, 0, 179, 179) );
+        scoretext.setBackgroundMode(HVisible.BACKGROUND_FILL );
+        scoretext.setVisible(true);
+       scene.add(scoretext);
        
+//       fieldtext.setLocation(250, 150);
+//        fieldtext.setSize(150, 50 );
+//        fieldtext.setBackground( new DVBColor(0, 0, 179, 179) );
+//        fieldtext.setBackgroundMode(HVisible.BACKGROUND_FILL );
+//        fieldtext.setVisible(true);
+//       scene.add(fieldtext);
+
       
     }
 
     public void startXlet() {
         scene.validate();
-        scene.setVisible(true);
+    scene.setVisible(true);
         
         EventManager manager = EventManager.getInstance();
         UserEventRepository repository = new UserEventRepository("move");
@@ -56,7 +79,10 @@ public class HelloTVXlet implements Xlet, UserEventListener {
         
         manager.addUserEventListener( this , repository);
         
-        restart();
+        
+        
+       
+restart();
     }
 
     public void pauseXlet() {
@@ -73,6 +99,7 @@ public class HelloTVXlet implements Xlet, UserEventListener {
             switch (e.getCode()){
                 case HRcEvent.VK_UP:
                     move(0);
+                    
                     break;
                 case HRcEvent.VK_DOWN:
                     move(1);
@@ -81,7 +108,7 @@ public class HelloTVXlet implements Xlet, UserEventListener {
                     move(2);
                     break;
                 case HRcEvent.VK_RIGHT:
-                    move(3);  
+                    move(3); 
                     
                     break;
                 default:
@@ -113,9 +140,13 @@ public class HelloTVXlet implements Xlet, UserEventListener {
         int number = newNumber();
         playingField[i][j] = new Integer(number);
         score = score + number;
+        
+        
+        
     }
     
-   
+
+    
     public void move(int direction)
     {
         boolean moved = false;
@@ -144,6 +175,7 @@ public class HelloTVXlet implements Xlet, UserEventListener {
                                             playingField[i][j] = null;
                                             moved=true;
                                             
+                                            
                                         }
                                         
                                     }
@@ -166,6 +198,7 @@ public class HelloTVXlet implements Xlet, UserEventListener {
                                             playingField [3-k][j] = new Integer(playingField[3-k][j].intValue() * 2);
                                             playingField[3-i][j] = null;
                                             moved=true;
+                                            
                                             
                                         }
                                         
@@ -191,6 +224,7 @@ public class HelloTVXlet implements Xlet, UserEventListener {
                                             playingField[i][j] = null;
                                             moved=true;
                                             
+                                            
                                         }
                                         
                                     }
@@ -209,12 +243,14 @@ public class HelloTVXlet implements Xlet, UserEventListener {
                                             playingField[i][3-k] = playingField[i][3-j];
                                             playingField[i][3-j] = null;
                                             moved = true;
+                                            
                                         } else if (playingField[i][3-j] != null && playingField[i][3-k].intValue() == playingField[i][3-j].intValue() )
                                         {
                                             score = score + playingField[i][3-k].intValue();
                                             playingField [i][3-k] = new Integer(playingField[i][3-k].intValue() * 2);
                                             playingField[i][3-j] = null;
                                             moved=true;
+                                            
                                             
                                         }
                                         
@@ -226,6 +262,8 @@ public class HelloTVXlet implements Xlet, UserEventListener {
                 }
         if(moved)
         {
+            
+            
             newTile();
             drawField();
         }
@@ -252,6 +290,8 @@ public class HelloTVXlet implements Xlet, UserEventListener {
         System.out.println("score: " + score);
         
         
+        
+        
         for(int i = 0; i< tiles; i++ )
         {
             for(int j = 0; j < tiles; j++)
@@ -259,6 +299,7 @@ public class HelloTVXlet implements Xlet, UserEventListener {
                 if(playingField[i][j] != null)
                 {
                     System.out.print(playingField[i][j]);
+                    
                 } else
                 {
                     System.out.print(0);
